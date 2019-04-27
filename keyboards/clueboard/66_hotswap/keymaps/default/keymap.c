@@ -1,5 +1,6 @@
 #include QMK_KEYBOARD_H
 
+
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
 #define _BL 0
@@ -15,7 +16,10 @@ enum custom_keycodes {
     S_ONEUP,
     S_COIN,
     S_SONIC,
-    S_ZELDA
+    S_ZELDA,
+    TGL_JP,
+    CTALDEL,
+    SHAIN
 };
 
 #ifdef AUDIO_ENABLE
@@ -28,11 +32,36 @@ enum custom_keycodes {
   float song_one_up[][2]  = SONG(ONE_UP_SOUND);
   float song_sonic_ring[][2]  = SONG(SONIC_RING);
   float song_zelda_puzzle[][2]  = SONG(ZELDA_PUZZLE);
+  float tone_goodbye[][2]    = SONG(MUSIC_OFF_SOUND);
 #endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  /* Keymap _BL: Base Layer (Default Layer)
-   */
+
+[_BL] = LAYOUT(
+   KC_GESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_MINS,  KC_EQL, KC_BSPC, KC_PGUP, \
+    KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_LBRC, KC_RBRC, KC_BSLS, KC_PGDN, \
+   KC_LCTL,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,  KC_ENT, \
+   KC_LSFT,             KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT,   KC_UP, \
+     MO(2), KC_LGUI, KC_LALT,     LT(1,KC_SPC),           KC_SPC,        C(KC_SPC),KC_LANG2, KC_KANA, KC_PSCR, KC_LEFT, KC_DOWN, KC_RGHT),
+
+[_FL] = LAYOUT(
+    KC_GRV,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12,  KC_DEL,C(KC_PGUP), \
+   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,C(KC_PGDN), \
+   _______, _______, _______,  KC_DEL, KC_PGDN, _______, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, _______, _______, _______, \
+   _______,          C(KC_Y), _______, _______, _______, KC_PGUP, _______, _______, _______, _______, _______, _______, KC_PGUP, \
+   KC_TRNS, _______, _______,          _______,          _______,          _______, _______, _______, _______, KC_HOME, KC_PGDN,  KC_END),
+
+[_CL] = LAYOUT(
+   CTALDEL,   SHAIN, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  KC_DEL, _______, \
+   _______, _______, _______, EEP_RST,   RESET, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+   _______, BL_TOGG,  BL_INC,  BL_DEC, _______, _______, _______, KC_MS_L, KC_MS_U, KC_MS_D, KC_MS_R, _______, _______, \
+   _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+   _______, _______, _______,          KC_BTN1,          KC_BTN2,          _______, _______, _______, _______, _______, _______, _______),
+};
+
+/*
+  // Keymap _BL: Base Layer (Default Layer)
+   
 [_BL] = LAYOUT(
   KC_GESC,KC_1,   KC_2,   KC_3,   KC_4,   KC_5,   KC_6,   KC_7,   KC_8,   KC_9,   KC_0,   KC_MINS,KC_EQL,      KC_BSPC,           KC_PGUP, \
   KC_TAB, KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,   KC_Y,   KC_U,   KC_I,   KC_O,   KC_P,   KC_LBRC,KC_RBRC,KC_BSLS,                KC_PGDN, \
@@ -40,8 +69,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_LSFT,        KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   KC_N,   KC_M,   KC_COMM,KC_DOT, KC_SLSH,          KC_RSFT,        KC_UP,           \
   KC_LCTL,KC_LGUI,KC_LALT,                KC_SPC, KC_SPC,                         KC_RGUI,KC_RALT,MO(_FL),KC_RCTL,KC_LEFT,KC_DOWN,KC_RGHT),
 
-  /* Keymap _FL: Function Layer
-   */
+  // Keymap _FL: Function Layer
+   
 [_FL] = LAYOUT(
   KC_GRV, KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F6,  KC_F7,  KC_F8,  KC_F9,  KC_F10, KC_F11, KC_F12,      KC_DEL,            KC_VOLU, \
   _______,_______,_______,_______,_______,_______,_______,_______,_______,KC_MPRV,KC_MPLY,KC_MNXT,_______,KC_MUTE,                KC_VOLD, \
@@ -49,8 +78,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,        _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,        _______,        KC_PGUP,         \
   _______,_______,_______,                _______,_______,                        _______,_______,MO(_FL),_______,KC_HOME,KC_PGDN,KC_END),
 
-  /* Keymap _CL: Control layer
-   */
+  // Keymap _CL: Control layer
+   
 [_CL] = LAYOUT(
   BL_STEP,S_ONEUP,S_SCALE,RGB_M_R,RGB_M_SW,RGB_M_SN,RGB_M_K,RGB_M_X,RGB_M_G,_______,_______,_______,_______,   BL_TOGG,           BL_INC, \
   _______,_______,_______,_______,RESET,  _______,_______,_______,_______,_______,_______,_______,_______,_______,                BL_DEC, \
@@ -58,7 +87,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,        _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,        _______,        RGB_SAI,         \
   _______,_______,_______,                BL_BRTG,BL_BRTG,                        _______,_______,MO(_FL),_______,RGB_HUD,RGB_SAD,RGB_HUI),
 };
-
+*/
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -118,6 +147,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
                 return false;
         #endif
+	    case TGL_JP:
+                if (record->event.pressed) {
+                    SEND_STRING(SS_LALT("`"));
+                }
+                return false;
+	    case SHAIN:
+                if (record->event.pressed) {
+                    SEND_STRING("1113163");
+                }
+                return false;
+	    case CTALDEL:
+	      if (record->event.pressed) {
+		register_code(KC_LCTRL);
+		register_code(KC_LALT);
+		register_code(KC_DEL);
+	      }else{
+		unregister_code(KC_LCTRL);
+		unregister_code(KC_LALT);
+		unregister_code(KC_DEL);
+	#ifdef AUDIO_ENABLE
+		PLAY_SONG(tone_goodbye);
+	#endif
+      } 
     }
     return true;
 }
