@@ -158,16 +158,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
                 return false;
 	    case CTALDEL:
-	      if (record->event.pressed) {
-		register_code(KC_LCTRL);
-		register_code(KC_LALT);
-		register_code(KC_DEL);
-	      }else{
-		unregister_code(KC_LCTRL);
-		unregister_code(KC_LALT);
-		unregister_code(KC_DEL);
+                if (record->event.pressed) {
+                    register_code(KC_LCTRL);
+             	    register_code(KC_LALT);
+                    register_code(KC_DEL);
+                }else{
+                    unregister_code(KC_LCTRL);
+                    unregister_code(KC_LALT);
+                    unregister_code(KC_DEL);
 	#ifdef AUDIO_ENABLE
-		PLAY_SONG(tone_goodbye);
+                    PLAY_SONG(tone_goodbye);
 	#endif
       } 
     }
